@@ -1,41 +1,53 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>EksenPortal</title>
+<meta charset="UTF-8">
+<title>EksenPortal</title>
 
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      color: white;
-      font-family: serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-    .text {
-      opacity: 0;
-      font-size: 28px;
-      transition: opacity 1.2s ease;
-    }
+/* yazı */
+.text {
+  opacity: 0;
+  font-size: 32px;
+  transition: opacity 2s ease;
+}
+</style>
 
-    .show {
-      opacity: 1;
-    }
-  </style>
 </head>
 
 <body>
 
-<div class="text" id="text">Kal</div>
+<div class="text">Kal</div>
 
 <script>
-  setTimeout(() => {
-    document.getElementById("text").classList.add("show");
-  }, 1200);
+const text = document.querySelector(".text");
+
+// yavaşça görün
+setTimeout(() => {
+  text.style.opacity = 1;
+}, 500);
+
+// sonra kaybol
+setTimeout(() => {
+  text.style.opacity = 0;
+}, 4000);
+
+// yeni kelime gelsin
+setTimeout(() => {
+  text.innerText = "Bak";
+  text.style.opacity = 1;
+}, 6000);
 </script>
 
 </body>
