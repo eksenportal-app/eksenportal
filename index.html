@@ -30,45 +30,53 @@
   <div class="text" id="text"></div>
 
   <script>
-    const text = document.getElementById("text");
+const text = document.getElementById("text");
 
-    const sequence = [
-      { word: "", show: 1400, hide: 0 },
-      { word: "Kal", show: 3400, hide: 2400 },
-      { word: "Bak", show: 2800, hide: 2400 },
-      { word: "Gör", show: 3400, hide: 4000 } // ← boşluk uzadı
-    ];
+const sequence = [
+  { word: "", show: 1400, hide: 0 },
+  { word: "Kal", show: 3400, hide: 2400 },
+  { word: "Bak", show: 2800, hide: 2400 },
+  { word: "Gör", show: 3400, hide: 4000 }
+];
 
-    let index = 0;
+let index = 0;
+let running = true;
 
-    function playSequence() {
-      if (index >= sequence.length) {
-        index = 0; // 🔁 döngü
-      }
+function playSequence() {
+  if (!running) return;
 
-      const step = sequence[index];
+  if (index >= sequence.length) {
+    index = 0;
+  }
 
-      text.style.opacity = 0;
+  const step = sequence[index];
 
-      setTimeout(() => {
-        text.textContent = step.word;
+  text.style.opacity = 0;
 
-        if (step.word !== "") {
-          text.style.opacity = 1;
-        }
+  setTimeout(() => {
+    text.textContent = step.word;
 
-        setTimeout(() => {
-          text.style.opacity = 0;
-          index++;
-
-          setTimeout(playSequence, step.hide);
-        }, step.show);
-
-      }, 400);
+    if (step.word !== "") {
+      text.style.opacity = 1;
     }
 
-    playSequence();
-  </script>
+    setTimeout(() => {
+      text.style.opacity = 0;
+      index++;
+
+      setTimeout(playSequence, step.hide);
+    }, step.show);
+
+  }, 400);
+}
+
+playSequence();
+
+// 🔥 dokununca yeniden başlat
+document.body.addEventListener("click", () => {
+  index = 0;
+});
+</script>
 
 </body>
 </html>
