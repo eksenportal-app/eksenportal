@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>EksenPortal</title>
+<meta charset="UTF-8">
+<title>EksenPortal</title>
 
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      color: white;
-      font-family: serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
 
-    .text {
-      opacity: 0;
-      font-size: 34px;
-      transition: opacity 2.8s ease;
-      letter-spacing: 0.03em;
-    }
-  </style>
+.text {
+  opacity: 0;
+  font-size: 34px;
+  transition: opacity 2.8s ease;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+</style>
 </head>
+
 <body>
 
-  <div class="text" id="text"></div>
+<div class="text" id="text"></div>
 
-  <script>
+<script>
 const text = document.getElementById("text");
 
 const sequence = [
   { word: "", show: 1400, hide: 0 },
   { word: "Kal", show: 3400, hide: 2400 },
   { word: "Bak", show: 2800, hide: 2400 },
-  { word: "Gör", show: 3400, hide: 4000 }
+  { word: "Gör", show: 3400, hide: 4000 },
+  { word: "şimdi neye yöneliyorsun?", show: 5000, hide: 3000 }
 ];
 
 let index = 0;
-let running = true;
 
 function playSequence() {
-  if (!running) return;
-
   if (index >= sequence.length) {
     index = 0;
   }
@@ -72,7 +72,7 @@ function playSequence() {
 
 playSequence();
 
-// 🔥 dokununca yeniden başlat
+// dokununca başa dön
 document.body.addEventListener("click", () => {
   index = 0;
 });
