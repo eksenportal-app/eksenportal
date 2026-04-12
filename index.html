@@ -17,36 +17,55 @@ body {
   overflow: hidden;
 }
 
+.container {
+  text-align: center;
+}
+
 .text {
   opacity: 0;
   font-size: 34px;
   transition: opacity 2.8s ease;
   letter-spacing: 0.03em;
-  text-align: center;
+}
+
+.options {
+  margin-top: 20px;
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity 2s ease;
+  line-height: 1.8;
 }
 </style>
 </head>
 
 <body>
 
-<div class="text" id="text"></div>
+<div class="container">
+  <div class="text" id="text"></div>
+  <div class="options" id="options">
+    burada kal<br>
+    yaz<br>
+    harekete geç
+  </div>
+</div>
 
 <script>
 const text = document.getElementById("text");
+const options = document.getElementById("options");
 
 const sequence = [
   { word: "", show: 1400, hide: 0 },
   { word: "Kal", show: 3400, hide: 2400 },
   { word: "Bak", show: 2800, hide: 2400 },
   { word: "Gör", show: 3400, hide: 4000 },
-  { word: "şimdi neye yöneliyorsun?", show: 5000, hide: 3000 }
+  { word: "şimdi neye yöneliyorsun?", show: 4000, hide: 0 }
 ];
 
 let index = 0;
 
 function playSequence() {
   if (index >= sequence.length) {
-    index = 0;
+    return;
   }
 
   const step = sequence[index];
@@ -64,7 +83,15 @@ function playSequence() {
       text.style.opacity = 0;
       index++;
 
-      setTimeout(playSequence, step.hide);
+      if (index === sequence.length) {
+        // seçenekleri göster
+        setTimeout(() => {
+          options.style.opacity = 1;
+        }, 500);
+      } else {
+        setTimeout(playSequence, step.hide);
+      }
+
     }, step.show);
 
   }, 400);
@@ -72,9 +99,11 @@ function playSequence() {
 
 playSequence();
 
-// dokununca başa dön
+// dokununca reset
 document.body.addEventListener("click", () => {
   index = 0;
+  options.style.opacity = 0;
+  playSequence();
 });
 </script>
 
