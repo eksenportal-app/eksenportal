@@ -14,7 +14,6 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: hidden;
 }
 
 .container {
@@ -24,30 +23,30 @@ body {
 .text {
   opacity: 0;
   font-size: 34px;
-  transition: opacity 3.5s ease;
-  letter-spacing: 0.04em;
-}
-
-.soft {
-  font-size: 20px;
-  opacity: 0.6;
+  transition: opacity 3s ease;
 }
 
 .input-box {
   margin-top: 25px;
   opacity: 0;
-  transition: opacity 2.5s ease;
+  transition: opacity 2s ease;
 }
 
 input {
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255,255,255,0.5);
+  border-bottom: 1px solid white;
   color: white;
   font-size: 18px;
   outline: none;
   text-align: center;
   width: 260px;
+}
+
+.soft {
+  margin-top: 10px;
+  font-size: 16px;
+  opacity: 0.6;
 }
 </style>
 </head>
@@ -58,26 +57,36 @@ input {
   <div class="text" id="text"></div>
 
   <div class="input-box" id="inputBox">
-    <input type="text" placeholder="..." />
-    <div class="soft">alanını kur</div>
+    <input type="text" />
+    <div class="soft" id="actionText"></div>
   </div>
 </div>
 
 <script>
 const text = document.getElementById("text");
 const inputBox = document.getElementById("inputBox");
+const actionText = document.getElementById("actionText");
 
-const sequence = [
-  { word: "", show: 2000, hide: 0 },                 // alan (hisset)
-  { word: "bir şey var", show: 4500, hide: 2000 },   // sezgi (uzun kalır)
-  { word: "gör", show: 3000, hide: 2000 }            // yumuşak geçiş
+// daha önce girilmiş mi?
+let firstTime = !localStorage.getItem("visited");
+
+// girişten sonra işaretle
+localStorage.setItem("visited", "true");
+
+// mod seçimi
+let mode = firstTime ? "deep" : "daily";
+
+// metin akışı
+let sequence = [
+  { word: "", show: mode === "deep" ? 2000 : 1000 },
+  { word: "bir şey var", show: 4000 },
+  { word: "gör", show: 2500 }
 ];
 
 let index = 0;
 
-function playSequence() {
+function play() {
   if (index >= sequence.length) {
-    // input açılıyor (aksiyon alanı)
     setTimeout(() => {
       inputBox.style.opacity = 1;
     }, 800);
@@ -90,37 +99,32 @@ function playSequence() {
 
   setTimeout(() => {
     text.textContent = step.word;
-
-    if (step.word !== "") {
-      text.style.opacity = 1;
-    }
+    text.style.opacity = 1;
 
     setTimeout(() => {
       text.style.opacity = 0;
       index++;
-      setTimeout(playSequence, step.hide);
+      setTimeout(play, 1500);
     }, step.show);
 
-  }, 400);
+  }, 300);
 }
 
-playSequence();
+play();
 
-// yazdıktan sonra yumuşak kapanış
+// aksiyon metni
+if (mode === "deep") {
+  actionText.textContent = "alanını kur";
+} else {
+  actionText.textContent = "küçük bir adım";
+}
+
+// enter → kapanış
 document.querySelector("input").addEventListener("keydown", function(e) {
   if (e.key === "Enter") {
-    fadeOut();
+    document.body.style.transition = "opacity 4s ease";
+    document.body.style.opacity = 0;
   }
-});
-
-function fadeOut() {
-  document.body.style.transition = "opacity 5s ease";
-  document.body.style.opacity = 0;
-}
-
-// dokununca reset
-document.body.addEventListener("click", () => {
-  location.reload();
 });
 </script>
 
