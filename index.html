@@ -35,6 +35,23 @@ body {
   transition: opacity 2s ease;
   line-height: 1.8;
 }
+
+.input-box {
+  margin-top: 20px;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid white;
+  color: white;
+  font-size: 18px;
+  outline: none;
+  text-align: center;
+  width: 250px;
+}
 </style>
 </head>
 
@@ -42,16 +59,23 @@ body {
 
 <div class="container">
   <div class="text" id="text"></div>
+
   <div class="options" id="options">
-    burada kal<br>
-    yaz<br>
-    harekete geç
+    <div onclick="selectOption('stay')">burada kal</div>
+    <div onclick="selectOption('write')">yaz</div>
+    <div onclick="selectOption('act')">harekete geç</div>
+  </div>
+
+  <div class="input-box" id="inputBox">
+    <div class="text" id="actionText">şu an neye yöneliyorsun?</div>
+    <input type="text" />
   </div>
 </div>
 
 <script>
 const text = document.getElementById("text");
 const options = document.getElementById("options");
+const inputBox = document.getElementById("inputBox");
 
 const sequence = [
   { word: "", show: 1400, hide: 0 },
@@ -64,9 +88,7 @@ const sequence = [
 let index = 0;
 
 function playSequence() {
-  if (index >= sequence.length) {
-    return;
-  }
+  if (index >= sequence.length) return;
 
   const step = sequence[index];
 
@@ -84,7 +106,6 @@ function playSequence() {
       index++;
 
       if (index === sequence.length) {
-        // seçenekleri göster
         setTimeout(() => {
           options.style.opacity = 1;
         }, 500);
@@ -99,11 +120,34 @@ function playSequence() {
 
 playSequence();
 
+function selectOption(type) {
+  options.style.opacity = 0;
+
+  if (type === "act") {
+    setTimeout(() => {
+      inputBox.style.opacity = 1;
+    }, 500);
+  }
+
+  if (type === "stay") {
+    fadeOut();
+  }
+
+  if (type === "write") {
+    setTimeout(() => {
+      inputBox.style.opacity = 1;
+    }, 500);
+  }
+}
+
+function fadeOut() {
+  document.body.style.transition = "opacity 4s ease";
+  document.body.style.opacity = 0;
+}
+
 // dokununca reset
 document.body.addEventListener("click", () => {
-  index = 0;
-  options.style.opacity = 0;
-  playSequence();
+  location.reload();
 });
 </script>
 
