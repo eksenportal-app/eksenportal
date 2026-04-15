@@ -86,6 +86,7 @@ const sequence = [
 ];
 
 let index = 0;
+let autoCloseTimer;
 
 function playSequence() {
   if (index >= sequence.length) return;
@@ -108,6 +109,12 @@ function playSequence() {
       if (index === sequence.length) {
         setTimeout(() => {
           options.style.opacity = 1;
+
+          // ⏳ SEÇİM YOKSA OTOMATİK KAPANIŞ
+          autoCloseTimer = setTimeout(() => {
+            fadeOut();
+          }, 8000);
+
         }, 500);
       } else {
         setTimeout(playSequence, step.hide);
@@ -121,22 +128,24 @@ function playSequence() {
 playSequence();
 
 function selectOption(type) {
+  clearTimeout(autoCloseTimer); // otomatik kapanışı iptal et
+
   options.style.opacity = 0;
 
-  if (type === "act") {
+  if (type === "act" || type === "write") {
     setTimeout(() => {
       inputBox.style.opacity = 1;
+
+      // input açıldıktan sonra da kapanış gelsin
+      setTimeout(() => {
+        fadeOut();
+      }, 8000);
+
     }, 500);
   }
 
   if (type === "stay") {
     fadeOut();
-  }
-
-  if (type === "write") {
-    setTimeout(() => {
-      inputBox.style.opacity = 1;
-    }, 500);
   }
 }
 
