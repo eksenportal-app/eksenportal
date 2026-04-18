@@ -1,172 +1,268 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EksenPortal</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EksenPortal</title>
 
-<style>
-body {
-  margin:0;
-  background:#000;
-  color:white;
-  font-family: Georgia, serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  text-align:center;
-}
+  <style>
+    :root {
+      --bg: #000000;
+      --fg: rgba(255, 255, 255, 0.96);
+      --soft: rgba(255, 255, 255, 0.68);
+      --faint: rgba(255, 255, 255, 0.34);
+      --line: rgba(255, 255, 255, 0.28);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-.wrap {
-  width:90%;
-  max-width:420px;
-}
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-.dot {
-  width:4px;
-  height:4px;
-  background:white;
-  border-radius:50%;
-  margin:0 auto 28px auto;
-  opacity:0.95;
-}
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: white;
+      overflow: hidden;
+      font-family: Georgia, "Times New Roman", serif;
+    }
 
-.breath {
-  animation: breath 2.5s infinite;
-}
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
 
-@keyframes breath {
-  0%,100% { opacity:0.85; transform:scale(1); }
-  50% { opacity:1; transform:scale(1.1); }
-}
+    .wrap {
+      width: min(90%, 420px);
+      position: relative;
+    }
 
-.text {
-  opacity:0;
-  transition:opacity 1.4s ease;
-  margin:12px 0;
-}
+    .dot {
+      width: 4px;
+      height: 4px;
+      background: #fff;
+      border-radius: 50%;
+      margin: 0 auto 30px auto;
+      opacity: 0.95;
+      transform: scale(1);
+      transition: opacity 1.2s var(--ease);
+    }
 
-.show {
-  opacity:1;
-}
+    .breath {
+      animation: breath 2.8s ease-in-out infinite;
+    }
 
-.small { font-size:14px; opacity:0.35; }
-.mid { font-size:22px; opacity:0.65; }
-.big {
-  font-size:30px;
-  transform:scale(0.98);
-  transition:opacity 1.8s ease, transform 1.8s ease;
-}
+    @keyframes breath {
+      0%, 100% {
+        opacity: 0.86;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.08);
+      }
+    }
 
-.show.big {
-  transform:scale(1);
-}
+    .text {
+      opacity: 0;
+      margin: 12px 0;
+      transition:
+        opacity 1.4s var(--ease),
+        transform 1.8s var(--ease);
+      transform: scale(1);
+    }
 
-.questionWrap {
-  opacity:0;
-  transition:opacity 1.2s ease;
-  margin-top:25px;
-}
+    .show {
+      opacity: 1;
+    }
 
-.questionWrap.show {
-  opacity:1;
-}
+    .small {
+      font-size: 14px;
+      color: var(--faint);
+    }
 
-input {
-  margin-top:15px;
-  border:none;
-  border-bottom:1px solid rgba(255,255,255,0.3);
-  background:none;
-  color:white;
-  text-align:center;
-  font-size:18px;
-  outline:none;
-}
+    .mid {
+      font-size: 22px;
+      color: var(--soft);
+    }
 
-.hint {
-  margin-top:12px;
-  font-size:14px;
-  opacity:0;
-  transition:opacity 1.4s ease;
-}
+    .big {
+      font-size: 30px;
+      color: var(--fg);
+      transform: scale(0.985);
+    }
 
-.hint.show {
-  opacity:0.6;
-}
-</style>
+    .big.show {
+      transform: scale(1);
+    }
+
+    .questionWrap {
+      opacity: 0;
+      margin-top: 28px;
+      transition: opacity 1.2s var(--ease);
+    }
+
+    .questionWrap.show {
+      opacity: 1;
+    }
+
+    .question {
+      font-size: 24px;
+      line-height: 1.35;
+      margin-bottom: 18px;
+      color: var(--fg);
+    }
+
+    .entry {
+      width: min(82vw, 280px);
+      margin-top: 10px;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      background: none;
+      color: white;
+      text-align: center;
+      font-size: 18px;
+      font-family: inherit;
+      outline: none;
+      padding: 8px 6px 10px;
+    }
+
+    .entry::placeholder {
+      color: rgba(255, 255, 255, 0.16);
+    }
+
+    .hint {
+      margin-top: 14px;
+      font-size: 14px;
+      color: var(--soft);
+      opacity: 0;
+      transition: opacity 1.4s var(--ease);
+    }
+
+    .hint.show {
+      opacity: 0.62;
+    }
+
+    .hide-soft {
+      opacity: 0 !important;
+      transition: opacity 1.2s var(--ease) !important;
+    }
+
+    .questionWrap.hide-soft {
+      opacity: 0 !important;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="wrap">
-  <div id="dot" class="dot"></div>
+  <div class="wrap" id="wrap">
+    <div id="dot" class="dot"></div>
 
-  <div id="line1" class="text small">zaten vardı</div>
-  <div id="line2" class="text mid">burada</div>
-  <div id="line3" class="text big">bir şey var</div>
-  <div id="line4" class="text mid">gör</div>
+    <div id="line1" class="text small">zaten vardı</div>
+    <div id="line2" class="text mid">burada</div>
+    <div id="line3" class="text big">bir şey var</div>
+    <div id="line4" class="text mid">gör</div>
 
-  <div id="questionWrap" class="questionWrap">
-    <div style="margin-top:25px;">şu an seni ne çağırıyor?</div>
-    <input id="entry" placeholder="bir şey yaz..." />
-    <div id="hint" class="hint"></div>
+    <div id="questionWrap" class="questionWrap">
+      <div class="question">şu an seni ne çağırıyor?</div>
+      <input id="entry" class="entry" type="text" placeholder="bir şey yaz..." />
+      <div id="hint" class="hint"></div>
+    </div>
   </div>
-</div>
 
-<script>
-const VISITED = "eksenportal_v1";
-const firstVisit = !localStorage.getItem(VISITED);
-localStorage.setItem(VISITED, "1");
+  <script>
+    const VISITED_KEY = "eksenportal_visit_v_final";
 
-const dot = document.getElementById("dot");
-const l1 = document.getElementById("line1");
-const l2 = document.getElementById("line2");
-const l3 = document.getElementById("line3");
-const l4 = document.getElementById("line4");
-const q = document.getElementById("questionWrap");
-const hint = document.getElementById("hint");
+    const firstVisit = !localStorage.getItem(VISITED_KEY);
+    localStorage.setItem(VISITED_KEY, "1");
 
-hint.innerText = firstVisit ? "alanını hazırla" : "küçük başla";
+    const dot = document.getElementById("dot");
+    const wrap = document.getElementById("wrap");
 
-function show(el) { el.classList.add("show"); }
+    const line1 = document.getElementById("line1");
+    const line2 = document.getElementById("line2");
+    const line3 = document.getElementById("line3");
+    const line4 = document.getElementById("line4");
 
-if(firstVisit){
+    const questionWrap = document.getElementById("questionWrap");
+    const entry = document.getElementById("entry");
+    const hint = document.getElementById("hint");
 
-  // SABAH / İLK GİRİŞ
-  setTimeout(()=>show(l1),500);
-  setTimeout(()=>show(l2),2000);
-  setTimeout(()=>show(l3),4000);
-  setTimeout(()=>show(l4),6500);
+    const texts = [line1, line2, line3, line4];
 
-  setTimeout(()=>dot.classList.add("breath"),8500);
+    hint.innerText = firstVisit ? "alanını hazırla" : "küçük başla";
 
-  setTimeout(()=>{
-    dot.classList.remove("breath");
-    q.classList.add("show");
-  },10000);
+    function show(el) {
+      el.classList.add("show");
+    }
 
-  setTimeout(()=>hint.classList.add("show"),12000);
+    if (firstVisit) {
+      // İLK GİRİŞ / SABAH / DERİN AÇILIŞ
+      setTimeout(() => show(line1), 500);    // zaten vardı
+      setTimeout(() => show(line2), 2000);   // burada
+      setTimeout(() => show(line3), 4000);   // bir şey var
+      setTimeout(() => show(line4), 6500);   // gör
 
-}else{
+      setTimeout(() => {
+        dot.classList.add("breath");
+      }, 8500);
 
-  // GÜN İÇİ
-  l1.style.display="none";
+      setTimeout(() => {
+        dot.classList.remove("breath");
+        questionWrap.classList.add("show");
+        entry.focus({ preventScroll: true });
+      }, 10000);
 
-  setTimeout(()=>show(l2),400);
-  setTimeout(()=>show(l3),1800);
-  setTimeout(()=>show(l4),3400);
+      setTimeout(() => {
+        hint.classList.add("show");
+      }, 12000);
 
-  setTimeout(()=>dot.classList.add("breath"),4300);
+    } else {
+      // TEKRAR GİRİŞ / GÜN İÇİ / KISA AÇILIŞ
+      line1.style.display = "none";
 
-  setTimeout(()=>{
-    dot.classList.remove("breath");
-    q.classList.add("show");
-  },5500);
+      setTimeout(() => show(line2), 400);    // burada
+      setTimeout(() => show(line3), 1800);   // bir şey var
+      setTimeout(() => show(line4), 3400);   // gör
 
-  setTimeout(()=>hint.classList.add("show"),6500);
-}
-</script>
+      setTimeout(() => {
+        dot.classList.add("breath");
+      }, 4300);
+
+      setTimeout(() => {
+        dot.classList.remove("breath");
+        questionWrap.classList.add("show");
+        entry.focus({ preventScroll: true });
+      }, 5500);
+
+      setTimeout(() => {
+        hint.classList.add("show");
+      }, 6500);
+    }
+
+    entry.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter") return;
+
+      setTimeout(() => {
+        texts.forEach(t => t.classList.add("hide-soft"));
+        questionWrap.classList.add("hide-soft");
+      }, 350);
+
+      // Sadece nokta kalır
+      setTimeout(() => {
+        line1.style.display = "none";
+        line2.style.display = "none";
+        line3.style.display = "none";
+        line4.style.display = "none";
+        questionWrap.style.display = "none";
+      }, 1700);
+    });
+  </script>
 
 </body>
 </html>
