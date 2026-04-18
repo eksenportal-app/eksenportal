@@ -6,89 +6,166 @@
 <title>EksenPortal</title>
 
 <style>
-  body {
-    margin: 0;
-    background: #000;
-    color: #fff;
-    font-family: Georgia, serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-  }
+body {
+  margin:0;
+  background:#000;
+  color:white;
+  font-family: Georgia, serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  text-align:center;
+}
 
-  .wrap {
-    width: 90%;
-    max-width: 420px;
-  }
+.wrap {
+  width:90%;
+  max-width:420px;
+}
 
-  .dot {
-    width: 4px;
-    height: 4px;
-    background: #fff;
-    border-radius: 50%;
-    margin: 0 auto 28px auto;
-    opacity: 0.95;
-  }
+.dot {
+  width:4px;
+  height:4px;
+  background:white;
+  border-radius:50%;
+  margin:0 auto 28px auto;
+  opacity:0.95;
+}
 
-  .text {
-    opacity: 0;
-    transition: opacity 1.2s ease;
-    margin: 12px 0;
-  }
+.breath {
+  animation: breath 2.5s infinite;
+}
 
-  .show {
-    opacity: 1;
-  }
+@keyframes breath {
+  0%,100% { opacity:0.85; transform:scale(1); }
+  50% { opacity:1; transform:scale(1.1); }
+}
 
-  .small {
-    font-size: 14px;
-    opacity: 0.5;
-  }
+.text {
+  opacity:0;
+  transition:opacity 1.4s ease;
+  margin:12px 0;
+}
 
-  .mid {
-    font-size: 22px;
-    opacity: 0.8;
-  }
+.show {
+  opacity:1;
+}
 
-  .big {
-    font-size: 28px;
-  }
+.small { font-size:14px; opacity:0.35; }
+.mid { font-size:22px; opacity:0.65; }
+.big {
+  font-size:30px;
+  transform:scale(0.98);
+  transition:opacity 1.8s ease, transform 1.8s ease;
+}
+
+.show.big {
+  transform:scale(1);
+}
+
+.questionWrap {
+  opacity:0;
+  transition:opacity 1.2s ease;
+  margin-top:25px;
+}
+
+.questionWrap.show {
+  opacity:1;
+}
+
+input {
+  margin-top:15px;
+  border:none;
+  border-bottom:1px solid rgba(255,255,255,0.3);
+  background:none;
+  color:white;
+  text-align:center;
+  font-size:18px;
+  outline:none;
+}
+
+.hint {
+  margin-top:12px;
+  font-size:14px;
+  opacity:0;
+  transition:opacity 1.4s ease;
+}
+
+.hint.show {
+  opacity:0.6;
+}
 </style>
 </head>
+
 <body>
 
 <div class="wrap">
-  <div class="dot"></div>
+  <div id="dot" class="dot"></div>
 
-  <div id="t1" class="text small">zaten vardı</div>
-  <div id="t2" class="text mid">burada</div>
-  <div id="t3" class="text big">bir şey var</div>
-  <div id="t4" class="text mid">gör</div>
+  <div id="line1" class="text small">zaten vardı</div>
+  <div id="line2" class="text mid">burada</div>
+  <div id="line3" class="text big">bir şey var</div>
+  <div id="line4" class="text mid">gör</div>
+
+  <div id="questionWrap" class="questionWrap">
+    <div style="margin-top:25px;">şu an seni ne çağırıyor?</div>
+    <input id="entry" placeholder="bir şey yaz..." />
+    <div id="hint" class="hint"></div>
+  </div>
 </div>
 
 <script>
-  const t1 = document.getElementById("t1");
-  const t2 = document.getElementById("t2");
-  const t3 = document.getElementById("t3");
-  const t4 = document.getElementById("t4");
+const VISITED = "eksenportal_v1";
+const firstVisit = !localStorage.getItem(VISITED);
+localStorage.setItem(VISITED, "1");
 
-  setTimeout(function () {
-    t1.classList.add("show");
-  }, 1000);
+const dot = document.getElementById("dot");
+const l1 = document.getElementById("line1");
+const l2 = document.getElementById("line2");
+const l3 = document.getElementById("line3");
+const l4 = document.getElementById("line4");
+const q = document.getElementById("questionWrap");
+const hint = document.getElementById("hint");
 
-  setTimeout(function () {
-    t2.classList.add("show");
-  }, 2500);
+hint.innerText = firstVisit ? "alanını hazırla" : "küçük başla";
 
-  setTimeout(function () {
-    t3.classList.add("show");
-  }, 4000);
+function show(el) { el.classList.add("show"); }
 
-  setTimeout(function () {
-    t4.classList.add("show");
-  }, 5500);
+if(firstVisit){
+
+  // SABAH / İLK GİRİŞ
+  setTimeout(()=>show(l1),500);
+  setTimeout(()=>show(l2),2000);
+  setTimeout(()=>show(l3),4000);
+  setTimeout(()=>show(l4),6500);
+
+  setTimeout(()=>dot.classList.add("breath"),8500);
+
+  setTimeout(()=>{
+    dot.classList.remove("breath");
+    q.classList.add("show");
+  },10000);
+
+  setTimeout(()=>hint.classList.add("show"),12000);
+
+}else{
+
+  // GÜN İÇİ
+  l1.style.display="none";
+
+  setTimeout(()=>show(l2),400);
+  setTimeout(()=>show(l3),1800);
+  setTimeout(()=>show(l4),3400);
+
+  setTimeout(()=>dot.classList.add("breath"),4300);
+
+  setTimeout(()=>{
+    dot.classList.remove("breath");
+    q.classList.add("show");
+  },5500);
+
+  setTimeout(()=>hint.classList.add("show"),6500);
+}
 </script>
 
 </body>
