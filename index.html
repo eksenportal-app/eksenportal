@@ -1,132 +1,349 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<title>EksenPortal</title>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+  <meta name="theme-color" content="#000000" />
+  <title>EksenPortal</title>
 
-<style>
-body {
-  margin: 0;
-  background: black;
-  color: white;
-  font-family: serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+  <style>
+    :root {
+      --bg: #000000;
+      --fg: rgba(255, 255, 255, 0.96);
+      --fg-soft: rgba(255, 255, 255, 0.58);
+      --fg-faint: rgba(255, 255, 255, 0.34);
+      --line: rgba(255, 255, 255, 0.22);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-.container {
-  text-align: center;
-}
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-.text {
-  opacity: 0;
-  font-size: 34px;
-  transition: opacity 3s ease;
-}
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Times New Roman", Georgia, serif;
+      overflow: hidden;
+    }
 
-.input-box {
-  margin-top: 25px;
-  opacity: 0;
-  transition: opacity 2s ease;
-}
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-input {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid white;
-  color: white;
-  font-size: 18px;
-  outline: none;
-  text-align: center;
-  width: 260px;
-}
+    .app {
+      width: min(92vw, 520px);
+      padding: 24px;
+      text-align: center;
+      position: relative;
+    }
 
-.soft {
-  margin-top: 10px;
-  font-size: 16px;
-  opacity: 0.6;
-}
-</style>
+    .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      margin: 0 auto 34px auto;
+      opacity: 0.95;
+      transform: scale(1);
+    }
+
+    .dot.breathing {
+      animation: dotBreath 2.8s ease-in-out infinite;
+    }
+
+    @keyframes dotBreath {
+      0%, 100% {
+        opacity: 0.92;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.08);
+      }
+    }
+
+    .line {
+      min-height: 28px;
+      opacity: 0;
+      transition:
+        opacity 1.4s var(--ease),
+        transform 1.4s var(--ease);
+      transform: scale(0.995);
+      letter-spacing: 0.01em;
+    }
+
+    .line.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .line-1 {
+      font-size: 15px;
+      color: var(--fg-faint);
+      margin-bottom: 12px;
+    }
+
+    .line-2 {
+      font-size: 22px;
+      color: var(--fg-soft);
+      margin-bottom: 18px;
+    }
+
+    .line-3 {
+      font-size: 28px;
+      margin-bottom: 18px;
+    }
+
+    .line-4 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .pause-space {
+      height: 26px;
+    }
+
+    .question-wrap {
+      opacity: 0;
+      transition: opacity 1.2s var(--ease);
+      margin-top: 18px;
+    }
+
+    .question-wrap.show {
+      opacity: 1;
+    }
+
+    .question {
+      font-size: 24px;
+      line-height: 1.35;
+      margin-bottom: 22px;
+    }
+
+    .input-wrap {
+      width: min(82vw, 320px);
+      margin: 0 auto;
+    }
+
+    .entry {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      color: var(--fg);
+      font: inherit;
+      font-size: 20px;
+      text-align: center;
+      outline: none;
+      padding: 10px 8px 12px;
+    }
+
+    .entry::placeholder {
+      color: rgba(255, 255, 255, 0.18);
+    }
+
+    .action-hint {
+      font-size: 15px;
+      color: var(--fg-soft);
+      margin-top: 14px;
+      opacity: 0;
+      transition: opacity 1.6s var(--ease);
+    }
+
+    .action-hint.show {
+      opacity: 1;
+    }
+
+    .saved {
+      opacity: 0;
+      transition: opacity 0.9s var(--ease);
+      margin-top: 16px;
+      color: var(--fg-soft);
+      font-size: 16px;
+      min-height: 22px;
+    }
+
+    .saved.show {
+      opacity: 1;
+    }
+
+    .fade-out {
+      animation: fadeOut 4.2s var(--ease) forwards;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+      }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+  </style>
 </head>
-
 <body>
+  <main class="app" aria-label="EksenPortal">
+    <div id="dot" class="dot" aria-hidden="true"></div>
 
-<div class="container">
-  <div class="text" id="text"></div>
+    <div id="line1" class="line line-1">zaten vardı</div>
+    <div id="line2" class="line line-2">burada</div>
+    <div id="line3" class="line line-3">bir şey var</div>
+    <div id="line4" class="line line-4">gör</div>
 
-  <div class="input-box" id="inputBox">
-    <input type="text" />
-    <div class="soft" id="actionText"></div>
-  </div>
-</div>
+    <div class="pause-space" aria-hidden="true"></div>
 
-<script>
-const text = document.getElementById("text");
-const inputBox = document.getElementById("inputBox");
-const actionText = document.getElementById("actionText");
+    <section id="questionWrap" class="question-wrap" aria-live="polite">
+      <div class="question">şu an seni ne çağırıyor?</div>
 
-// daha önce girilmiş mi?
-let firstTime = !localStorage.getItem("visited");
+      <div class="input-wrap">
+        <label class="sr-only" for="entry">Bir şey yaz</label>
+        <input
+          id="entry"
+          class="entry"
+          type="text"
+          maxlength="120"
+          placeholder="bir şey yaz…"
+          autocomplete="off"
+        />
+      </div>
 
-// girişten sonra işaretle
-localStorage.setItem("visited", "true");
+      <div id="actionHint" class="action-hint">alanını kur</div>
+      <div id="saved" class="saved">kaydedildi</div>
+    </section>
+  </main>
 
-// mod seçimi
-let mode = firstTime ? "deep" : "daily";
+  <script>
+    (function () {
+      const STORAGE_VISITED = "eksenportal_visited_v1";
+      const STORAGE_ENTRIES = "eksenportal_entries_v1";
 
-// metin akışı
-let sequence = [
-  { word: "", show: mode === "deep" ? 2000 : 1000 },
-  { word: "bir şey var", show: 4000 },
-  { word: "gör", show: 2500 }
-];
+      const dot = document.getElementById("dot");
+      const line1 = document.getElementById("line1");
+      const line2 = document.getElementById("line2");
+      const line3 = document.getElementById("line3");
+      const line4 = document.getElementById("line4");
+      const questionWrap = document.getElementById("questionWrap");
+      const actionHint = document.getElementById("actionHint");
+      const entry = document.getElementById("entry");
+      const saved = document.getElementById("saved");
+      const app = document.querySelector(".app");
 
-let index = 0;
+      const firstVisit = !localStorage.getItem(STORAGE_VISITED);
+      localStorage.setItem(STORAGE_VISITED, "true");
 
-function play() {
-  if (index >= sequence.length) {
-    setTimeout(() => {
-      inputBox.style.opacity = 1;
-    }, 800);
-    return;
-  }
+      actionHint.textContent = firstVisit ? "alanını kur" : "küçük başla";
 
-  const step = sequence[index];
+      const timing = firstVisit
+        ? {
+            line1: 600,
+            line2: 1600,
+            line3: 2900,
+            line4: 4500,
+            pauseStart: 5200,
+            question: 6400,
+            hint: 7600
+          }
+        : {
+            line1: 300,
+            line2: 900,
+            line3: 1800,
+            line4: 3000,
+            pauseStart: 3500,
+            question: 4500,
+            hint: 5600
+          };
 
-  text.style.opacity = 0;
+      function show(el) {
+        el.classList.add("show");
+      }
 
-  setTimeout(() => {
-    text.textContent = step.word;
-    text.style.opacity = 1;
+      function startFlow() {
+        setTimeout(() => show(line1), timing.line1);
+        setTimeout(() => show(line2), timing.line2);
+        setTimeout(() => show(line3), timing.line3);
+        setTimeout(() => show(line4), timing.line4);
 
-    setTimeout(() => {
-      text.style.opacity = 0;
-      index++;
-      setTimeout(play, 1500);
-    }, step.show);
+        // "gör" sonrası kısa sessizlik + nokta nefesi
+        setTimeout(() => {
+          dot.classList.add("breathing");
+        }, timing.pauseStart);
 
-  }, 300);
-}
+        setTimeout(() => {
+          dot.classList.remove("breathing");
+          show(questionWrap);
+          entry.focus({ preventScroll: true });
+        }, timing.question);
 
-play();
+        setTimeout(() => {
+          show(actionHint);
+        }, timing.hint);
+      }
 
-// aksiyon metni
-if (mode === "deep") {
-  actionText.textContent = "alanını kur";
-} else {
-  actionText.textContent = "küçük bir adım";
-}
+      function getEntries() {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_ENTRIES) || "[]");
+        } catch {
+          return [];
+        }
+      }
 
-// enter → kapanış
-document.querySelector("input").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") {
-    document.body.style.transition = "opacity 4s ease";
-    document.body.style.opacity = 0;
-  }
-});
-</script>
+      function saveEntry(text) {
+        const entries = getEntries();
+        entries.unshift({
+          text,
+          mode: firstVisit ? "deep" : "daily",
+          createdAt: new Date().toISOString()
+        });
+        localStorage.setItem(STORAGE_ENTRIES, JSON.stringify(entries.slice(0, 100)));
+      }
 
+      function completeFlow(text) {
+        if (text) {
+          saveEntry(text);
+          saved.classList.add("show");
+        }
+
+        // Yazılan şey kısa süre görünür, sonra sessiz kapanış.
+        setTimeout(() => {
+          app.classList.add("fade-out");
+        }, 900);
+      }
+
+      entry.addEventListener("keydown", function (e) {
+        if (e.key !== "Enter") return;
+
+        const text = entry.value.trim();
+        completeFlow(text);
+      });
+
+      // İstersen boş da geçilebilsin:
+      // ekrana iki kez dokunma yerine burada sadece ESC ile kapanış
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          app.classList.add("fade-out");
+        }
+      });
+
+      startFlow();
+    })();
+  </script>
 </body>
 </html>
