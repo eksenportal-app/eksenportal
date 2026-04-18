@@ -2,56 +2,93 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EksenPortal</title>
 
 <style>
-body {
-  margin:0;
-  background:#000;
-  color:white;
-  font-family: Georgia, serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  text-align:center;
-}
+  body {
+    margin: 0;
+    background: #000;
+    color: #fff;
+    font-family: Georgia, serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+  }
 
-.dot {
-  width:4px;
-  height:4px;
-  background:white;
-  border-radius:50%;
-  margin:20px auto;
-}
+  .wrap {
+    width: 90%;
+    max-width: 420px;
+  }
 
-.text {
-  opacity:0;
-  transition:opacity 1.2s;
-}
+  .dot {
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    margin: 0 auto 28px auto;
+    opacity: 0.95;
+  }
 
-.show {
-  opacity:1;
-}
+  .text {
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    margin: 12px 0;
+  }
+
+  .show {
+    opacity: 1;
+  }
+
+  .small {
+    font-size: 14px;
+    opacity: 0.5;
+  }
+
+  .mid {
+    font-size: 22px;
+    opacity: 0.8;
+  }
+
+  .big {
+    font-size: 28px;
+  }
 </style>
 </head>
-
 <body>
 
-<div>
+<div class="wrap">
   <div class="dot"></div>
 
-  <div id="t1" class="text">zaten vardı</div>
-  <div id="t2" class="text">burada</div>
-  <div id="t3" class="text">bir şey var</div>
-  <div id="t4" class="text">gör</div>
+  <div id="t1" class="text small">zaten vardı</div>
+  <div id="t2" class="text mid">burada</div>
+  <div id="t3" class="text big">bir şey var</div>
+  <div id="t4" class="text mid">gör</div>
 </div>
 
 <script>
-setTimeout(()=>t1.classList.add("show"),1000);
-setTimeout(()=>t2.classList.add("show"),2500);
-setTimeout(()=>t3.classList.add("show"),4000);
-setTimeout(()=>t4.classList.add("show"),5500);
+  const t1 = document.getElementById("t1");
+  const t2 = document.getElementById("t2");
+  const t3 = document.getElementById("t3");
+  const t4 = document.getElementById("t4");
+
+  setTimeout(function () {
+    t1.classList.add("show");
+  }, 1000);
+
+  setTimeout(function () {
+    t2.classList.add("show");
+  }, 2500);
+
+  setTimeout(function () {
+    t3.classList.add("show");
+  }, 4000);
+
+  setTimeout(function () {
+    t4.classList.add("show");
+  }, 5500);
 </script>
 
 </body>
