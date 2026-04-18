@@ -1,108 +1,184 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>EksenPortal</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+  <title>EksenPortal</title>
 
-<style>
-body {
-  margin:0;
-  background:#000;
-  color:#fff;
-  font-family: Georgia, serif;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height:100vh;
-  text-align:center;
-}
+  <style>
+    :root {
+      --bg: #000000;
+      --fg: rgba(255,255,255,0.95);
+      --soft: rgba(255,255,255,0.78);
+      --faint: rgba(255,255,255,0.40);
+      --line: rgba(255,255,255,0.26);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-.container { width:90%; max-width:400px; }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-.dot {
-  width:4px; height:4px;
-  background:#fff;
-  border-radius:50%;
-  margin:0 auto 30px;
-}
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: var(--bg);
+      color: var(--fg);
+      overflow: hidden;
+      font-family: Georgia, "Times New Roman", serif;
+    }
 
-.breath { animation: breath 2.5s infinite; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-@keyframes breath {
-  0%,100% { opacity:0.8; transform:scale(1); }
-  50% { opacity:1; transform:scale(1.1); }
-}
+    .app {
+      width: min(92vw, 420px);
+      padding: 24px 18px;
+      text-align: center;
+    }
 
-.text { opacity:0; transition:opacity 1.2s; margin:10px 0; }
-.show { opacity:1; }
+    .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.95);
+      margin: 0 auto 34px;
+      opacity: 0.95;
+      transform: scale(1);
+    }
 
-.small { font-size:14px; opacity:0.5; }
-.mid { font-size:20px; opacity:0.8; }
-.big { font-size:26px; }
+    .dot.breathing {
+      animation: dotBreath 2.8s ease-in-out infinite;
+    }
 
-.input { 
-  margin-top:20px; 
-  border:none; 
-  border-bottom:1px solid rgba(255,255,255,0.3);
-  background:none;
-  color:white;
-  text-align:center;
-  font-size:18px;
-  outline:none;
-}
+    @keyframes dotBreath {
+      0%, 100% {
+        opacity: 0.92;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.08);
+      }
+    }
 
-.action {
-  margin-top:15px;
-  opacity:0.6;
-  font-size:14px;
-}
-</style>
+    .line {
+      opacity: 0;
+      transition: opacity 1.2s var(--ease);
+      min-height: 26px;
+      letter-spacing: 0.01em;
+    }
+
+    .line.show {
+      opacity: 1;
+    }
+
+    .t1 {
+      font-size: 14px;
+      color: var(--faint);
+      margin-bottom: 12px;
+    }
+
+    .t2 {
+      font-size: 21px;
+      color: var(--soft);
+      margin-bottom: 18px;
+    }
+
+    .t3 {
+      font-size: 28px;
+      color: var(--fg);
+      margin-bottom: 18px;
+    }
+
+    .t4 {
+      font-size: 21px;
+      color: var(--soft);
+      margin-bottom: 8px;
+    }
+
+    .question-wrap {
+      opacity: 0;
+      transition: opacity 1.2s var(--ease);
+      margin-top: 28px;
+    }
+
+    .question-wrap.show {
+      opacity: 1;
+    }
+
+    .question {
+      font-size: 24px;
+      line-height: 1.35;
+      margin-bottom: 20px;
+      color: var(--fg);
+    }
+
+    .entry {
+      width: min(82vw, 280px);
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      color: var(--fg);
+      text-align: center;
+      font: inherit;
+      font-size: 18px;
+      outline: none;
+      padding: 10px 8px 12px;
+    }
+
+    .entry::placeholder {
+      color: rgba(255,255,255,0.16);
+    }
+
+    .hint {
+      opacity: 0;
+      transition: opacity 1.4s var(--ease);
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--soft);
+    }
+
+    .hint.show {
+      opacity: 1;
+    }
+
+    .fade-out {
+      animation: fadeOut 4.2s var(--ease) forwards;
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; }
+    }
+  </style>
 </head>
-
 <body>
+  <main class="app" id="app">
+    <div id="dot" class="dot"></div>
 
-<div class="container">
-  <div id="dot" class="dot"></div>
+    <div id="line1" class="line t1">zaten vardı</div>
+    <div id="line2" class="line t2">burada</div>
+    <div id="line3" class="line t3">bir şey var</div>
+    <div id="line4" class="line t4">gör</div>
 
-  <div id="t1" class="text small">zaten vardı</div>
-  <div id="t2" class="text mid">burada</div>
-  <div id="t3" class="text big">bir şey var</div>
-  <div id="t4" class="text mid">gör</div>
+    <section id="questionWrap" class="question-wrap">
+      <div class="question">şu an seni ne çağırıyor?</div>
+      <input id="entry" class="entry" type="text" placeholder="bir şey yaz…" maxlength="120" />
+      <div id="hint" class="hint"></div>
+    </section>
+  </main>
 
-  <div id="question" class="text">
-    <div style="margin-top:30px;">şu an seni ne çağırıyor?</div>
-    <input class="input" placeholder="bir şey yaz..." />
-    <div id="action" class="action"></div>
-  </div>
-</div>
+  <script>
+    (function () {
+      const VISITED_KEY = "eksenportal_visited_v2";
+      const ENTRIES_KEY = "eksenportal_entries_v2";
 
-<script>
-const firstVisit = !localStorage.getItem("visited");
-localStorage.setItem("visited", "1");
-
-const actionText = firstVisit ? "alanını hazırla" : "küçük başla";
-document.getElementById("action").innerText = actionText;
-
-function show(id, delay){
-  setTimeout(()=>document.getElementById(id).classList.add("show"), delay);
-}
-
-show("t1", 500);
-show("t2", 1500);
-show("t3", 2800);
-show("t4", 4200);
-
-// gör sonrası sessizlik + nefes
-setTimeout(()=>{
-  document.getElementById("dot").classList.add("breath");
-}, 4800);
-
-setTimeout(()=>{
-  document.getElementById("dot").classList.remove("breath");
-  document.getElementById("question").classList.add("show");
-}, 6000);
-</script>
-
-</body>
-</html>
+      const app = document.getElementById("app");
+      const dot = document.getElementById("dot");
+      const line1 = document.getElementById("line1");
+      const line2 = document.getElementByI…
