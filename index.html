@@ -1,163 +1,163 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EksenPortal</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EksenPortal</title>
 
-  <style>
-    body {
-      margin: 0;
-      background: #000;
-      color: #fff;
-      font-family: Georgia, serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      overflow: hidden;
-    }
+<style>
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: Georgia, serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+}
 
-    .wrap {
-      width: 90%;
-      max-width: 420px;
-    }
+.wrap {
+  width: 90%;
+  max-width: 420px;
+}
 
-    .dot {
-      width: 4px;
-      height: 4px;
-      background: #fff;
-      border-radius: 50%;
-      margin: 0 auto 28px auto;
-      opacity: 0.95;
-    }
+.dot {
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  margin: 0 auto 28px;
+  opacity: 0.95;
+}
 
-    .text {
-      opacity: 0;
-      transition: opacity 1.4s ease;
-      margin: 14px 0;
-    }
+.text {
+  opacity: 0;
+  transition: opacity 1.4s ease;
+  margin: 14px 0;
+}
 
-    .show {
-      opacity: 1;
-    }
+.show {
+  opacity: 1;
+}
 
-    .big {
-      font-size: 30px;
-      color: rgba(255,255,255,0.96);
-    }
+.big {
+  font-size: 30px;
+  color: rgba(255,255,255,0.96);
+}
 
-    .mid {
-      font-size: 22px;
-      color: rgba(255,255,255,0.72);
-    }
+.mid {
+  font-size: 22px;
+  color: rgba(255,255,255,0.72);
+}
 
-    .hint {
-      opacity: 0;
-      transition: opacity 1.2s ease;
-      margin-top: 28px;
-      font-size: 15px;
-      color: rgba(255,255,255,0.82);
-      letter-spacing: 0.01em;
-    }
+.entry {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  margin-top: 14px;
+  width: 260px;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+  background: none;
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  outline: none;
+}
 
-    .hint.show {
-      opacity: 0.58;
-    }
+.entry.show {
+  opacity: 1;
+}
 
-    .entry {
-      opacity: 0;
-      transition: opacity 1.2s ease;
-      margin-top: 14px;
-      width: 260px;
-      max-width: 80vw;
-      border: none;
-      border-bottom: 1px solid rgba(255,255,255,0.24);
-      background: none;
-      color: white;
-      text-align: center;
-      font-size: 18px;
-      font-family: inherit;
-      outline: none;
-      padding: 8px 6px 10px;
-    }
+.entry::placeholder {
+  color: rgba(255,255,255,0.16);
+}
 
-    .entry.show {
-      opacity: 1;
-    }
+.hint {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  margin-top: 28px;
+  font-size: 15px;
+  color: rgba(255,255,255,0.82);
+}
 
-    .entry::placeholder {
-      color: rgba(255,255,255,0.16);
-    }
+.hint.show {
+  opacity: 0.58;
+}
 
-    .hide {
-      opacity: 0 !important;
-      transition: opacity 1.2s ease !important;
-    }
-  </style>
+.hide {
+  opacity: 0 !important;
+  transition: opacity 1.2s ease !important;
+}
+</style>
 </head>
+
 <body>
 
-  <div class="wrap">
-    <div id="dot" class="dot"></div>
+<div class="wrap">
+  <div class="dot"></div>
 
-    <div id="t1" class="text big">bir şey var</div>
-    <div id="t2" class="text mid">gör</div>
+  <div id="t1" class="text big">bir şey var</div>
+  <div id="t2" class="text mid">gör</div>
 
-    <input id="entry" class="entry" type="text" placeholder="gelen…" />
-    <div id="hint" class="hint">küçük başla</div>
-  </div>
+  <input id="entry" class="entry" type="text" placeholder="gelen…" />
+  <div id="hint" class="hint">küçük başla</div>
+</div>
 
- <script>
-  const t1 = document.getElementById("t1");
-  const t2 = document.getElementById("t2");
-  const entry = document.getElementById("entry");
-  const hint = document.getElementById("hint");
+<script>
+const t1 = document.getElementById("t1");
+const t2 = document.getElementById("t2");
+const entry = document.getElementById("entry");
+const hint = document.getElementById("hint");
+
+/* GİRİŞ RİTMİ */
+
+setTimeout(() => {
+  t1.classList.add("show");
+}, 1100);
+
+setTimeout(() => {
+  t2.classList.add("show");
+}, 3200);
+
+setTimeout(() => {
+  entry.classList.add("show");
+}, 4200);
+
+setTimeout(() => {
+  hint.classList.add("show");
+  entry.focus();
+}, 7400);
+
+/* BIRAK - ÇÖZÜLME */
+
+entry.addEventListener("keydown", function (e) {
+  if (e.key !== "Enter") return;
 
   setTimeout(() => {
-    t1.classList.add("show");
-  }, 1100);
+    t2.classList.add("hide");
+  }, 250);
 
   setTimeout(() => {
-    t2.classList.add("show");
-  }, 3200);
+    t1.classList.add("hide");
+  }, 400);
 
   setTimeout(() => {
-    entry.classList.add("show");
-  }, 4200);
+    entry.classList.add("hide");
+  }, 550);
 
   setTimeout(() => {
-    hint.classList.add("show");
-    entry.focus();
-  }, 7400); // +1000 ms
+    hint.classList.add("hide");
+  }, 700);
 
-  entry.addEventListener("keydown", function (e) {
-    if (e.key !== "Enter") return;
-
-    setTimeout(() => {
-      t2.classList.add("hide"); // önce "gör"
-    }, 250);
-
-    setTimeout(() => {
-      t1.classList.add("hide"); // sonra "bir şey var"
-    }, 400);
-
-    setTimeout(() => {
-      entry.classList.add("hide"); // sonra input
-    }, 550);
-
-    setTimeout(() => {
-      hint.classList.add("hide"); // en son küçük başla
-    }, 700);
-
-    setTimeout(() => {
-      t1.style.display = "none";
-      t2.style.display = "none";
-      entry.style.display = "none";
-      hint.style.display = "none";
-    }, 1500);
-  });
+  setTimeout(() => {
+    t1.style.display = "none";
+    t2.style.display = "none";
+    entry.style.display = "none";
+    hint.style.display = "none";
+  }, 1500);
+});
 </script>
 
 </body>
