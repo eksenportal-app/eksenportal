@@ -3,45 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#000000" />
   <title>EksenPortal</title>
 
   <style>
-    :root {
-      --bg: #000000;
-      --fg: rgba(255, 255, 255, 0.96);
-      --soft: rgba(255, 255, 255, 0.68);
-      --faint: rgba(255, 255, 255, 0.34);
-      --line: rgba(255, 255, 255, 0.24);
-      --ease: cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html,
     body {
       margin: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--bg);
+      background: #000;
       color: #fff;
-      overflow: hidden;
-      font-family: Georgia, "Times New Roman", serif;
-    }
-
-    body {
+      font-family: Georgia, serif;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      height: 100vh;
       text-align: center;
+      overflow: hidden;
     }
 
     .wrap {
-      width: min(90%, 420px);
-      position: relative;
+      width: 90%;
+      max-width: 420px;
     }
 
     .dot {
@@ -49,296 +29,127 @@
       height: 4px;
       background: #fff;
       border-radius: 50%;
-      margin: 0 auto 30px auto;
+      margin: 0 auto 28px auto;
       opacity: 0.95;
-      transform: scale(1);
-      transition: opacity 1.2s var(--ease);
-    }
-
-    .breath {
-      animation: breath 2.8s ease-in-out infinite;
-    }
-
-    @keyframes breath {
-      0%, 100% {
-        opacity: 0.86;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 1;
-        transform: scale(1.08);
-      }
     }
 
     .text {
       opacity: 0;
-      margin: 12px 0;
-      transition:
-        opacity 1.4s var(--ease),
-        transform 1.8s var(--ease);
-      transform: scale(1);
+      transition: opacity 1.4s ease;
+      margin: 14px 0;
     }
 
     .show {
       opacity: 1;
     }
 
-    .small {
-      font-size: 14px;
-      color: var(--faint);
+    .big {
+      font-size: 30px;
+      color: rgba(255,255,255,0.96);
     }
 
     .mid {
       font-size: 22px;
-      color: var(--soft);
+      color: rgba(255,255,255,0.72);
     }
 
-    .big {
-      font-size: 30px;
-      color: var(--fg);
-      transform: scale(0.985);
-    }
-
-    .big.show {
-      transform: scale(1);
-    }
-
-    .questionWrap {
+    .hint {
       opacity: 0;
+      transition: opacity 1.2s ease;
       margin-top: 28px;
-      transition: opacity 1.2s var(--ease);
+      font-size: 15px;
+      color: rgba(255,255,255,0.82);
+      letter-spacing: 0.01em;
     }
 
-    .questionWrap.show {
+    .hint.show {
       opacity: 1;
     }
 
-    .question {
-      font-size: 24px;
-      line-height: 1.35;
-      margin-bottom: 16px;
-      color: var(--fg);
-    }
-
     .entry {
-      width: min(82vw, 280px);
-      margin-top: 8px;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      margin-top: 14px;
+      width: 260px;
+      max-width: 80vw;
       border: none;
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid rgba(255,255,255,0.24);
       background: none;
-      color: #fff;
+      color: white;
       text-align: center;
       font-size: 18px;
       font-family: inherit;
       outline: none;
       padding: 8px 6px 10px;
-      opacity: 0;
-      transition: opacity 1.1s var(--ease);
-    }
-
-    .entry::placeholder {
-      color: rgba(255, 255, 255, 0.16);
     }
 
     .entry.show {
       opacity: 1;
     }
 
-    .hint {
-      margin-top: 16px;
-      font-size: 15px;
-      color: rgba(255, 255, 255, 0.78);
-      letter-spacing: 0.01em;
-      opacity: 0;
-      transition: opacity 1s var(--ease);
+    .entry::placeholder {
+      color: rgba(255,255,255,0.16);
     }
 
-    .hint.show {
-      opacity: 0.78;
-    }
-
-    .hide-soft {
+    .hide {
       opacity: 0 !important;
-      transition: opacity 1.2s var(--ease) !important;
-    }
-
-    .questionWrap.hide-soft,
-    .entry.hide-soft,
-    .hint.hide-soft {
-      opacity: 0 !important;
+      transition: opacity 1.2s ease !important;
     }
   </style>
 </head>
 <body>
 
-  <div class="wrap" id="wrap">
+  <div class="wrap">
     <div id="dot" class="dot"></div>
 
-    <div id="line1" class="text small">zaten vardı</div>
-    <div id="line2" class="text mid">burada</div>
-    <div id="line3" class="text big">bir şey var</div>
-    <div id="line4" class="text mid">gör</div>
+    <div id="t1" class="text big">bir şey var</div>
+    <div id="t2" class="text mid">gör</div>
 
-    <div id="questionWrap" class="questionWrap">
-      <div class="question">şu an seni ne çağırıyor?</div>
-      <input id="entry" class="entry" type="text" placeholder="gelen…" maxlength="120" />
-      <div id="hint" class="hint"></div>
-    </div>
+    <input id="entry" class="entry" type="text" placeholder="gelen…" />
+    <div id="hint" class="hint">küçük başla</div>
   </div>
 
   <script>
-    const VISIT_KEY = "eksenportal_visit_final_v1";
-    const LAST_VISIT_KEY = "eksenportal_last_visit_final_v1";
-
-    const firstVisitEver = !localStorage.getItem(VISIT_KEY);
-    localStorage.setItem(VISIT_KEY, "1");
-
-    const now = Date.now();
-    const lastVisit = parseInt(localStorage.getItem(LAST_VISIT_KEY) || "0", 10);
-    localStorage.setItem(LAST_VISIT_KEY, String(now));
-
-    const diff = lastVisit ? now - lastVisit : null;
-
-    // Faz hissi: uzun ara = derin, yakın ara = kısa akış
-    let mode = "deep";
-    if (!firstVisitEver && diff !== null) {
-      if (diff < 15 * 60 * 1000) {
-        mode = "flow";
-      } else if (diff < 2 * 60 * 60 * 1000) {
-        mode = "flow";
-      } else {
-        mode = "soft";
-      }
-    }
-
-    const dot = document.getElementById("dot");
-    const line1 = document.getElementById("line1");
-    const line2 = document.getElementById("line2");
-    const line3 = document.getElementById("line3");
-    const line4 = document.getElementById("line4");
-    const questionWrap = document.getElementById("questionWrap");
+    const t1 = document.getElementById("t1");
+    const t2 = document.getElementById("t2");
     const entry = document.getElementById("entry");
     const hint = document.getElementById("hint");
 
-    const texts = [line1, line2, line3, line4];
+    setTimeout(() => {
+      t1.classList.add("show");
+    }, 800);
 
-    hint.textContent = firstVisitEver ? "alanını hazırla" : "küçük başla";
+    setTimeout(() => {
+      t2.classList.add("show");
+    }, 2600);
 
-    function show(el) {
-      el.classList.add("show");
-    }
+    setTimeout(() => {
+      entry.classList.add("show");
+    }, 4200);
 
-    function startDeep() {
-      setTimeout(() => show(line1), 500);
-      setTimeout(() => show(line2), 2000);
-      setTimeout(() => show(line3), 4000);
-      setTimeout(() => show(line4), 6500);
+    setTimeout(() => {
+      hint.classList.add("show");
+      entry.focus();
+    }, 5200);
 
-      setTimeout(() => {
-        dot.classList.add("breath");
-      }, 8500);
-
-      setTimeout(() => {
-        dot.classList.remove("breath");
-        show(questionWrap);
-      }, 10000);
-
-      // soru sonrası mikro boşluk
-      setTimeout(() => {
-        show(entry);
-        entry.focus({ preventScroll: true });
-      }, 10800);
-
-      setTimeout(() => {
-        show(hint);
-      }, 12400);
-    }
-
-    function startFlow() {
-      line1.style.display = "none";
-
-      setTimeout(() => show(line2), 400);
-      setTimeout(() => show(line3), 1800);
-      setTimeout(() => show(line4), 3400);
-
-      setTimeout(() => {
-        dot.classList.add("breath");
-      }, 4300);
-
-      setTimeout(() => {
-        dot.classList.remove("breath");
-        show(questionWrap);
-      }, 5500);
-
-      setTimeout(() => {
-        show(entry);
-        entry.focus({ preventScroll: true });
-      }, 6200);
-
-      setTimeout(() => {
-        show(hint);
-      }, 7400);
-    }
-
-    function startSoft() {
-      line1.style.display = "none";
-
-      setTimeout(() => show(line2), 500);
-      setTimeout(() => show(line3), 2200);
-      setTimeout(() => show(line4), 4200);
-
-      setTimeout(() => {
-        dot.classList.add("breath");
-      }, 5400);
-
-      setTimeout(() => {
-        dot.classList.remove("breath");
-        show(questionWrap);
-      }, 6900);
-
-      setTimeout(() => {
-        show(entry);
-      }, 7600);
-
-      setTimeout(() => {
-        show(hint);
-      }, 8800);
-    }
-
-    if (mode === "deep") {
-      startDeep();
-    } else if (mode === "flow") {
-      startFlow();
-    } else {
-      startSoft();
-    }
-
-    function dissolveToDot() {
-      texts.forEach(t => t.classList.add("hide-soft"));
-      questionWrap.classList.add("hide-soft");
-      entry.classList.add("hide-soft");
-      hint.classList.add("hide-soft");
-
-      setTimeout(() => {
-        line1.style.display = "none";
-        line2.style.display = "none";
-        line3.style.display = "none";
-        line4.style.display = "none";
-        questionWrap.style.display = "none";
-      }, 1500);
-    }
-
-    // Enter ile bırak
     entry.addEventListener("keydown", function (e) {
       if (e.key !== "Enter") return;
-      setTimeout(() => {
-        dissolveToDot();
-      }, 350);
-    });
 
-    // Yazmadan da küçük başla hissiyle çıkabilsin:
-    // küçük başla göründükten sonra kullanıcı isterse dokunmadan da kalabilir.
-    // Bu sürümde otomatik kapanış yok; nokta üzerinde kalır.
+      setTimeout(() => {
+        t1.classList.add("hide");
+        t2.classList.add("hide");
+        entry.classList.add("hide");
+        hint.classList.add("hide");
+      }, 250);
+
+      setTimeout(() => {
+        t1.style.display = "none";
+        t2.style.display = "none";
+        entry.style.display = "none";
+        hint.style.display = "none";
+      }, 1500);
+    });
   </script>
+
 </body>
 </html>
