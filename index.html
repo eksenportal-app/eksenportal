@@ -109,45 +109,56 @@
     <div id="hint" class="hint">küçük başla</div>
   </div>
 
-  <script>
-    const t1 = document.getElementById("t1");
-    const t2 = document.getElementById("t2");
-    const entry = document.getElementById("entry");
-    const hint = document.getElementById("hint");
+ <script>
+  const t1 = document.getElementById("t1");
+  const t2 = document.getElementById("t2");
+  const entry = document.getElementById("entry");
+  const hint = document.getElementById("hint");
+
+  setTimeout(() => {
+    t1.classList.add("show");
+  }, 800);
+
+  setTimeout(() => {
+    t2.classList.add("show");
+  }, 2600);
+
+  setTimeout(() => {
+    entry.classList.add("show");
+  }, 4200);
+
+  setTimeout(() => {
+    hint.classList.add("show");
+    entry.focus();
+  }, 5200);
+
+  entry.addEventListener("keydown", function (e) {
+    if (e.key !== "Enter") return;
 
     setTimeout(() => {
-      t1.classList.add("show");
-    }, 800);
+      t2.classList.add("hide"); // önce "gör"
+    }, 250);
 
     setTimeout(() => {
-      t2.classList.add("show");
-    }, 2600);
+      t1.classList.add("hide"); // sonra "bir şey var"
+    }, 400);
 
     setTimeout(() => {
-      entry.classList.add("show");
-    }, 4200);
+      entry.classList.add("hide"); // sonra input
+    }, 550);
 
     setTimeout(() => {
-      hint.classList.add("show");
-      entry.focus();
-    }, 5200);
+      hint.classList.add("hide"); // en son küçük başla
+    }, 700);
 
     setTimeout(() => {
-  t2.classList.add("hide"); // önce "gör"
-}, 250);
-
-setTimeout(() => {
-  t1.classList.add("hide"); // sonra "bir şey var"
-}, 400);
-
-setTimeout(() => {
-  entry.classList.add("hide"); // sonra input
-}, 550);
-
-setTimeout(() => {
-  hint.classList.add("hide"); // en son küçük başla
-}, 700);
-  </script>
+      t1.style.display = "none";
+      t2.style.display = "none";
+      entry.style.display = "none";
+      hint.style.display = "none";
+    }, 1500);
+  });
+</script>
 
 </body>
 </html>
