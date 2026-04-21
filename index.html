@@ -132,23 +132,21 @@
       entry.focus();
     }, 5200);
 
-    entry.addEventListener("keydown", function (e) {
-      if (e.key !== "Enter") return;
+  setTimeout(() => {
+  t2.classList.add("hide"); // önce "gör"
+}, 250);
 
-      setTimeout(() => {
-        t1.classList.add("hide");
-        t2.classList.add("hide");
-        entry.classList.add("hide");
-        hint.classList.add("hide");
-      }, 250);
+setTimeout(() => {
+  t1.classList.add("hide"); // sonra "bir şey var"
+}, 400);
 
-      setTimeout(() => {
-        t1.style.display = "none";
-        t2.style.display = "none";
-        entry.style.display = "none";
-        hint.style.display = "none";
-      }, 1500);
-    });
+setTimeout(() => {
+  entry.classList.add("hide"); // sonra input
+}, 550);
+
+setTimeout(() => {
+  hint.classList.add("hide"); // en son küçük başla
+}, 700);
   </script>
 
 </body>
